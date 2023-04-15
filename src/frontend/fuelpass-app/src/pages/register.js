@@ -43,32 +43,42 @@ export function Register() {
     return (
 
         <div>
-            <form onSubmit={handleSubmit}>
-                <div className="row">
-                    <div className="col-md-6">
-                        <label>Vehicle Number</label>
-                        <input type="text" className="form-control" onChange={handleChange} name="vehicleNumber" placeholder="Vehicle Number" />
-                        {errors.vehicleNumber && <span>{errors.vehicleNumber}</span>}
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 mt-5">
+                    <div className="card text-center">
+                        <div className="card-header">
+                            REGISTRATION
+                        </div>
+                        <div className="card-body">
+                            <form onSubmit={handleSubmit}>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <label className='d-flex justify-content-start'>Vehicle Number</label>
+                                        <input type="text" className="form-control mt-1" onChange={handleChange} name="vehicleNumber" placeholder="Vehicle Number" />
+                                        {errors.vehicleNumber && <span>{errors.vehicleNumber}</span>}
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label className='d-flex justify-content-start'>Vehicle Type</label>
+                                        <select onChange={handleChange} name="vehicleType" className="form-select mt-1">
+                                            <option value={0}>Select Type</option>
+                                            <option value={1}>Car</option>
+                                            <option value={2}>Bike</option>
+                                        </select>
+                                        {errors.vehicleType && <span className=''>{errors.vehicleType}</span>}
+                                    </div>
+                                </div>
+                                <div className="row mt-3">
+                                    <div className="col-md-6">
+                                        <label className='d-flex justify-content-start'>Chassis Number</label>
+                                        <input type="text" className="form-control mt-1" onChange={handleChange} name="chassisNumber" placeholder="Chassis Number" />
+                                        {errors.chassisNumber && <span>{errors.chassisNumber}</span>}
+                                    </div>
+                                    <div className='col-md-4 mt-4'> <button type="submit" className="btn btn-primary">Submit</button></div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div className="col-md-6">
-                        <label>Vehicle Type</label>
-                        <select id="inputState" onChange={handleChange} name="vehicleType" className="form-control">
-                            <option value={0}>Select Type</option>
-                            <option value={1}>Car</option>
-                            <option value={2}>Bike</option>
-                        </select>
-                        {errors.vehicleType && <span className=''>{errors.vehicleType}</span>}
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-4">
-                        <label >Chassis Number</label>
-                        <input type="text" className="form-control" onChange={handleChange} name="chassisNumber" placeholder="Chassis Number" />
-                        {errors.chassisNumber && <span>{errors.chassisNumber}</span>}
-                    </div>
-                    <div className='col-md-4 mt-4'> <button type="submit" className="btn btn-primary">Submit</button></div>
-                </div>
-            </form>
+                </div></div>
         </div>
     );
 
