@@ -11,11 +11,13 @@ namespace Repository
     {
         IEnumerable<Vehicle> GetAll();
 
-        Vehicle GetById(int id);
+       Task< Vehicle> GetById(int id);
 
-        List<Vehicle> GetByVehicleNumber(string vehicleNumber);
+        Task<List<Vehicle>> GetByVehicleNumber(string vehicleNumber);
 
-        void Add(Vehicle item);
+        Task<Vehicle> Add(Vehicle vehicle);
+
+        Task<List<VehicleFuelQuota>> GetQoutaByType(int typeId);
 
     }
 }

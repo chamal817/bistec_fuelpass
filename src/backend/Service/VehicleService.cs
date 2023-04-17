@@ -1,5 +1,6 @@
 ﻿using Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using Repository;
 using System;
 using System.Collections.Generic;
@@ -21,18 +22,23 @@ namespace Service
         {
             return _repository.GetAll();
         }
-        public Vehicle GetById(int id)
+        public async Task<Vehicle> GetById(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetById(id);
         }
-        public List<Vehicle> GetByVehicleNumber(string number)
+        public async Task<List<Vehicle>> GetByVehicleNumber(string number)
         {
-            return _repository.GetByVehicleNumber(number);
+            return await _repository.GetByVehicleNumber(number);
         }
 
-        public void Add(Vehicle item)
+        public async Task<Vehicle> Add(Vehicle vehicle)
         {
-            _repository.Add(item);
+            return  await _repository.Add(vehicle);
         }
+        public async Task<List<VehicleFuelQuota>> GetQoutaByType(int typeId)
+        {
+            return await _repository.GetQoutaByType(typeId);
+        }
+        
     }
 }
