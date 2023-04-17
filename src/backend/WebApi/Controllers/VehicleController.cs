@@ -1,6 +1,7 @@
 ﻿using Entity;
 using Microsoft.AspNetCore.Mvc;
 using Service;
+using System;
 
 namespace WebApi.Controllers
 {
@@ -9,10 +10,12 @@ namespace WebApi.Controllers
     public class VehicleController : ControllerBase
     {
         private readonly IVehicleService _service;
+       
 
         public VehicleController(IVehicleService service)
         {
             _service = service;
+
         }
 
         [HttpGet]
@@ -22,10 +25,10 @@ namespace WebApi.Controllers
             return Ok(_service.GetAll());
         }
         [HttpGet]
-        [Route("vehicle/{id}")]
+        [Route("vehicleGetById/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(_service.GetById(id));
+            return Ok(await _service.GetById(id));
         }
 
         [HttpGet]
@@ -37,9 +40,18 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("addvehicle")]
-        public void AddProduct(Vehicle vehicle)
+        public async Task<IActionResult> Add(Vehicle vehicle)
         {
-            _service.Add(vehicle);
+            var result = await _service.Add(vehicle);
+            return Ok(result);
         }
+        [HttpGet]
+        [Route("GetQoutaByType/{typeId}")]
+        public async Task<IActionResult> GetQoutaByType(int typeId)
+        {
+            return Ok( await _service.GetQoutaByType(typeId));
+        }
+
+
     }
 }

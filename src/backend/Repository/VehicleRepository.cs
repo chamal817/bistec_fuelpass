@@ -20,18 +20,25 @@ namespace Repository
         {
             return _context.Vehicles.ToList();
         }
-        public Vehicle GetById(int id)
+        public async Task<Vehicle> GetById(int id)
         {
             return _context.Vehicles.Find(id);
         }
-        public List<Vehicle> GetByVehicleNumber(string vehicleNumber)
+        public async Task<List<Vehicle>> GetByVehicleNumber(string vehicleNumber)
         {
-            return _context.Vehicles.Where(x => x.VehicleNumber == vehicleNumber).ToList();
+            return  _context.Vehicles.Where(x => x.VehicleNumber == vehicleNumber).ToList();
         }
-        public void Add(Vehicle item)
+        public async Task<Vehicle> Add(Vehicle vehicle)
         {
-            _context.Vehicles.Add(item);
+             _context.Vehicles.Add(vehicle);
             _context.SaveChanges();
+            return await Task.FromResult(vehicle);
         }
+        public async Task<List<VehicleFuelQuota>> GetQoutaByType(int typeId)
+        {
+            //return _context.VehicleFuelQuota.Where(x => x.Type == typeId).ToList();
+            return new List<VehicleFuelQuota>();
+        }
+
     }
 }

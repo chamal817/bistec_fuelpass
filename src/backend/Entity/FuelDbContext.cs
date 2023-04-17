@@ -14,6 +14,8 @@ namespace Entity
 
 
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Fuel> Fuel { get; set; }
+        public DbSet<VehicleFuelQuota> VehicleFuelQuota { get; set; }
     }
 
 }
