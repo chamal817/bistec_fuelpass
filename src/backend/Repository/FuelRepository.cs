@@ -29,6 +29,7 @@ namespace Repository
         }
         public async Task<int> GetVehicleQty(int typeId)
         {
+           
             var qty = _context.VehicleFuelQuota.Where(c => c.Id == typeId).Sum(c => c.qouta);
             return await Task.FromResult(qty);
         }
