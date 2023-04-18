@@ -11,7 +11,7 @@ namespace Repository
     {
         Task<Fuel> AddFuelQty(Fuel qty);
         Task<int> GetWeeklyQty(DateTime startDate, DateTime endDate, int vehicleId);
-        Task<int> GetVehicleQty(int vehicleId);
+        Task<int> GetVehicleQty(int typeId);
 
 
     }

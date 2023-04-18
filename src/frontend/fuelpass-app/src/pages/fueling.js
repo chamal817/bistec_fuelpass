@@ -1,49 +1,78 @@
-import { useState } from 'react'
-import { getVehicle, getAvailableQuota } from './api/vehicleService'
+import { useState, useEffect } from 'react'
+import { getVehicle, getAvailableQuota, fulling } from './api/vehicleService'
 
 
 export function Fueling() {
     const [formData, setFormData] = useState({
         vehicleNumber: '',
     });
+    const [fuelAmountForm, setFuelAmountForm] = useState({
+        fuelAmount: '',
+    });
     const [errors, setErrors] = useState({});
     const [availableQuota, setAvailableQuota] = useState('');
+    const [isShow, setIsShow] = useState(false);
+    const [isError, setIsError] = useState(false);
+
 
     const validateForm = () => {
         let errors = {};
-
         if (!formData.vehicleNumber.trim()) {
             errors.vehicleNumber = 'Vehicle Number is required';
+        }
+        return errors;
+    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const errors = validateForm();
+        if (Object.keys(errors).length === 0) {
+            getVehicleDetail();
+
+        } else {
+            setErrors(errors);
+        }
+        createDate();
+
+    }
+
+    const validateAmountForm = () => {
+        let errors = {};
+        if (!fuelAmountForm.fuelAmount.trim()) {
+            errors.fuelAmount = 'Fuel Amount is required';
+        }
+        if (parseInt(fuelAmountForm.fuelAmount, 10) >= +availableQuota) {
+            errors.fuelAmount = 'Enter Valid Amount';
         }
 
 
         return errors;
     }
-    const handleSubmit = (event) => {
 
+    const handleSubmitAmount = (event) => {
         event.preventDefault();
-        const errors = validateForm();
-
+        const errors = validateAmountForm();
         if (Object.keys(errors).length === 0) {
-            console.log(formData);
-            getData(formData)
+            saveFuelAmount();
         } else {
             setErrors(errors);
         }
-        createDate();
+
     }
 
-
-    async function getData(formData) {
+    async function getVehicleDetail() {
         const response = await getVehicle(formData.vehicleNumber);
-        if (response.result) {
-            console.log(response)
-            createDate(response.result[0].id,response.result[0].vehicleType)
-           
+        if (response.result.length) {
+            localStorage.setItem('vid', response.result[0].id);
+            createDate(response.result[0].vehicleType);
+            setIsError(false);
+        } else {
+            setIsShow(false);
+            setIsError(true);
+
         }
 
     }
-    function createDate(vehicleId,vehicleTypeId) {
+    function createDate(vehicleTypeId) {
         var currentDate = new Date;
         var first = currentDate.getDate() - currentDate.getDay();
         var last = first + 6;
@@ -53,18 +82,50 @@ export function Fueling() {
 
         var formattedFirstDay = firstDay.toISOString().slice(0, 10);
         var formattedLastDay = lastDay.toISOString().slice(0, 10);
-        checkAvailableQuota(formattedFirstDay ,formattedLastDay,vehicleId,vehicleTypeId)
+        var vehicleId = localStorage.getItem('vid');
+        checkAvailableQuota(formattedFirstDay, formattedLastDay, vehicleId, vehicleTypeId);
+
+
 
 
     }
 
-    async function checkAvailableQuota(startDate , endDate ,vehicleId,vehicleTypeId ) {
-        const response = await getAvailableQuota(startDate,endDate,vehicleId,vehicleTypeId);
+    async function checkAvailableQuota(startDate, endDate, vehicleId, vehicleTypeId) {
+        const response = await getAvailableQuota(startDate, endDate, vehicleId, vehicleTypeId);
+        setIsShow(true)
         setAvailableQuota(response)
+    }
+    function saveFuelAmount() {
+        var currentDate = new Date;
+        var vehicleId = localStorage.getItem('vid');
+        var date = currentDate.toISOString().slice(0, 10);
+        var data = {
+            "vehicleId": vehicleId,
+            "fuelqty": fuelAmountForm.fuelAmount,
+            "date": date
+        }
+        const response = fulling(data);
+        if (response) {
+            setFormData({
+                vehicleNumber: '',
+
+            });
+            setFuelAmountForm({
+                fuelAmount: '',
+
+            });
+            setIsShow(false)
+            setAvailableQuota('')
+        }
+
     }
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     }
+    const amountHandleChange = (event) => {
+        setFuelAmountForm({ ...fuelAmountForm, [event.target.name]: event.target.value });
+    }
+
     return (
         <div>
             <div className="row d-flex justify-content-center">
@@ -73,7 +134,7 @@ export function Fueling() {
                         <div className="card-header">
                             Fulling
                         </div>
-                       
+
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
                                 <div className="row g-3 align-items-center">
@@ -81,7 +142,7 @@ export function Fueling() {
                                         <label className="col-form-label">Vehicle Number</label>
                                     </div>
                                     <div className="col-md-6">
-                                        <input type="text" name="vehicleNumber" onChange={handleChange} className="form-control" />
+                                        <input type="text" name="vehicleNumber" value={formData.vehicleNumber} onChange={handleChange} className="form-control" />
                                         {errors.vehicleNumber && <span>{errors.vehicleNumber}</span>}
                                     </div>
                                     <div className="col-md-3">
@@ -92,8 +153,30 @@ export function Fueling() {
                                 </div>
 
                             </form>
+                            {isShow && (
+                                <form onSubmit={handleSubmitAmount}>
+                                    <div><h5>Available Quota :  {availableQuota}L</h5></div>
+                                    <div className="row g-3 align-items-center">
+                                        <div className="col-md-2">
+                                            <label className="col-form-label">Fuel Amount</label>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <input type="text" name="fuelAmount" value={fuelAmountForm.fuelAmount} onChange={amountHandleChange} className="form-control" />
+                                            {errors.fuelAmount && <span>{errors.fuelAmount}</span>}
+                                        </div>
+                                        <div className="col-md-3">
+                                            <span className="form-text">
+                                                <button type="submit" className="btn btn-primary">OK</button>
 
-                            <div>Available Quota :  {availableQuota}</div>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </form>)}
+
+                            {isError && <div className="alert alert-warning" role="alert">
+                                Please Enter Valid Number
+                            </div>}
                         </div>
                     </div>
                 </div >
