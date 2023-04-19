@@ -38,7 +38,6 @@ export function Register() {
 
     }
 
-
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     }
@@ -67,12 +66,12 @@ export function Register() {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <label className='d-flex justify-content-start'>Vehicle Number</label>
-                                        <input type="text" className="form-control mt-1" onChange={handleChange} name="vehicleNumber"  value={formData.vehicleNumber}  placeholder="Vehicle Number" />
+                                        <input type="text" className="form-control mt-1" onChange={handleChange} name="vehicleNumber" value={formData.vehicleNumber} placeholder="Vehicle Number" />
                                         {errors.vehicleNumber && <span className='error-message d-flex justify-content-start'>{errors.vehicleNumber}</span>}
                                     </div>
                                     <div className="col-md-6">
                                         <label className='d-flex justify-content-start'>Vehicle Type</label>
-                                        <select onChange={handleChange} name="vehicleType" value={formData.vehicleType}  className="form-select mt-1">
+                                        <select onChange={handleChange} name="vehicleType" value={formData.vehicleType} className="form-select mt-1">
                                             <option value={0}>Select Type</option>
                                             <option value={1}>Bike</option>
                                             <option value={2}>Car</option>
