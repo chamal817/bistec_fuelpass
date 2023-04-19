@@ -15,6 +15,7 @@ export function Fueling() {
     const [isError, setIsError] = useState(false);
 
 
+    //Form validation
     const validateForm = () => {
         let errors = {};
         if (!formData.vehicleNumber.trim()) {
@@ -22,6 +23,7 @@ export function Fueling() {
         }
         return errors;
     }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const errors = validateForm();
@@ -59,6 +61,7 @@ export function Fueling() {
 
     }
 
+    //Getting vehicle details from number
     async function getVehicleDetail() {
         const response = await getVehicle(formData.vehicleNumber);
         if (response.result.length) {
@@ -72,6 +75,8 @@ export function Fueling() {
         }
 
     }
+
+    //set week starting date and end date
     function createDate(vehicleTypeId) {
         var currentDate = new Date;
         var first = currentDate.getDate() - currentDate.getDay();
@@ -85,16 +90,16 @@ export function Fueling() {
         var vehicleId = localStorage.getItem('vid');
         checkAvailableQuota(formattedFirstDay, formattedLastDay, vehicleId, vehicleTypeId);
 
-
-
-
     }
 
+    //Check available Qty
     async function checkAvailableQuota(startDate, endDate, vehicleId, vehicleTypeId) {
         const response = await getAvailableQuota(startDate, endDate, vehicleId, vehicleTypeId);
         setIsShow(true)
         setAvailableQuota(response)
     }
+
+    //Save fuel amount
     function saveFuelAmount() {
         var currentDate = new Date;
         var vehicleId = localStorage.getItem('vid');

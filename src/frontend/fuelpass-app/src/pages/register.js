@@ -68,7 +68,7 @@ export function Register() {
                                     <div className="col-md-6">
                                         <label className='d-flex justify-content-start'>Vehicle Number</label>
                                         <input type="text" className="form-control mt-1" onChange={handleChange} name="vehicleNumber"  value={formData.vehicleNumber}  placeholder="Vehicle Number" />
-                                        {errors.vehicleNumber && <span>{errors.vehicleNumber}</span>}
+                                        {errors.vehicleNumber && <span className='error-message d-flex justify-content-start'>{errors.vehicleNumber}</span>}
                                     </div>
                                     <div className="col-md-6">
                                         <label className='d-flex justify-content-start'>Vehicle Type</label>
@@ -81,16 +81,16 @@ export function Register() {
                                             <option value={5}>Van</option>
                                             <option value={6}>Three Wheel</option>
                                         </select>
-                                        {errors.vehicleType && <span className=''>{errors.vehicleType}</span>}
+                                        {errors.vehicleType && <span className='error-message d-flex justify-content-start'>{errors.vehicleType}</span>}
                                     </div>
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6">
                                         <label className='d-flex justify-content-start'>Chassis Number</label>
                                         <input type="text" className="form-control mt-1" onChange={handleChange} value={formData.chassisNumber} name="chassisNumber" placeholder="Chassis Number" />
-                                        {errors.chassisNumber && <span>{errors.chassisNumber}</span>}
+                                        {errors.chassisNumber && <span className='error-message d-flex justify-content-start'>{errors.chassisNumber}</span>}
                                     </div>
-                                    <div className='col-md-4 mt-4'> <button type="submit" className="btn btn-primary">Submit</button></div>
+                                    <div className='col-md-4 mt-4'> <button type="submit" className="btn btn-primary d-flex justify-content-start">Submit</button></div>
                                 </div>
                             </form>
                         </div>
